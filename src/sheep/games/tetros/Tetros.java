@@ -17,6 +17,7 @@ public class Tetros implements Tick, Feature {
     private boolean started = false;
     private Render renderer;
     private TileDropper tileDropper;
+    private TileClearer tileClearer;
     private int fallingType = 1;
     private List<CellLocation> contents = new ArrayList<>();
     private final PieceGenerator[] pieceGenerators = {
@@ -35,6 +36,7 @@ public class Tetros implements Tick, Feature {
         this.randomTile = randomTile;
         this.renderer = new Render(sheet, this);
         this.tileDropper = new TileDropper(sheet, this, renderer);
+        this.tileClearer = new TileClearer(this, sheet);
     }
 
     @Override
@@ -95,34 +97,8 @@ public class Tetros implements Tick, Feature {
                 started = false;
             }
         }
-        clear();
+        tileClearer.clear();
         return true;
-    }
-
-    private void clear() {
-        for (int row = sheet.getRows() - 1; row >= 0; row--) {
-            boolean full = true;
-            for (int col = 0 ; col < sheet.getColumns(); col++) {
-                if (sheet.valueAt(row, col).getContent().equals("")) {
-                    full = false;
-                }
-            }
-            if (full) {
-                for (int rowX = row; rowX > 0; rowX--) {
-                    for (int col = 0 ; col < sheet.getColumns(); col++) {
-                        try {
-                            if (contents.contains(new CellLocation(rowX - 1, col))) {
-                                continue;
-                            }
-                            sheet.update(new CellLocation(rowX, col), sheet.valueAt(new CellLocation(rowX - 1, col)));
-                        } catch (TypeError e) {
-                            throw new RuntimeException(e);
-                        }
-                    }
-                }
-                row = row + 1;
-            }
-        }
     }
 
     public Perform getStart() {
