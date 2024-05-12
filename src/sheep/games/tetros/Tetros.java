@@ -16,6 +16,9 @@ public class Tetros implements Tick, Feature {
     private final Sheet sheet;
     private boolean started = false;
     private Render renderer;
+    private TileDropper tileDropper;
+    private int fallingType = 1;
+    private List<CellLocation> contents = new ArrayList<>();
     private final PieceGenerator[] pieceGenerators = {
             new PieceZero(),
             new PieceOne(),
@@ -25,6 +28,14 @@ public class Tetros implements Tick, Feature {
             new PieceFive(),
             new PieceSix()
     };
+    public final RandomTile randomTile;
+
+    public Tetros(Sheet sheet, RandomTile randomTile) {
+        this.sheet = sheet;
+        this.randomTile = randomTile;
+        this.renderer = new Render(sheet, this);
+        this.tileDropper = new TileDropper(sheet, this, renderer);
+    }
 
     @Override
     public void register(UI ui) {
@@ -36,19 +47,6 @@ public class Tetros implements Tick, Feature {
         ui.onKey("e", "Rotate Right", this.getRotate(1));
         ui.onKey("s", "Drop", this.getMove(0));
     }
-
-    private int fallingType = 1;
-    private List<CellLocation> contents = new ArrayList<>();
-
-    private boolean isStopper(CellLocation location) {
-        if (location.getRow() >= sheet.getRows()) {
-            return true;
-        }
-        if (location.getColumn() >= sheet.getColumns()) {
-            return true;
-        }
-        return !sheet.valueAt(location.getRow(), location.getColumn()).getContent().equals("");
-    }
     public boolean inBounds(List<CellLocation> locations) {
         for (CellLocation location : locations) {
             if (!sheet.contains(location)) {
@@ -56,22 +54,6 @@ public class Tetros implements Tick, Feature {
             }
         }
         return true;
-    }
-    public boolean dropTile() {
-        List<CellLocation> newContents = new ArrayList<>();
-        for (CellLocation tile : contents) {
-            newContents.add(new CellLocation(tile.getRow() + 1, tile.getColumn()));
-        }
-        renderer.unrender(contents);
-        for (CellLocation newLoc : newContents) {
-            if (isStopper(newLoc)) {
-                renderer.ununrender(contents);
-                return true;
-            }
-        }
-        renderer.ununrender(newContents);
-        this.contents = newContents;
-        return false;
     }
     public List<CellLocation> accessContents() {
         return contents;
@@ -81,13 +63,6 @@ public class Tetros implements Tick, Feature {
     }
     public int getFallingType() {
         return fallingType;
-    }
-    public final RandomTile randomTile;
-
-    public Tetros(Sheet sheet, RandomTile randomTile) {
-        this.sheet = sheet;
-        this.randomTile = randomTile;
-        this.renderer = new Render(sheet, this);
     }
 
     public boolean drop() {
@@ -114,7 +89,7 @@ public class Tetros implements Tick, Feature {
             return false;
         }
 
-        if (dropTile()) {
+        if (tileDropper.dropTile()) {
             if (drop()) {
                 prompt.message("Game Over!");
                 started = false;
@@ -161,7 +136,7 @@ public class Tetros implements Tick, Feature {
     }
 
     public Perform getMove(int direction) {
-        return new Move(direction, this, renderer);
+        return new Move(direction, this, renderer, tileDropper);
     }
     public Perform getRotate(int direction) {
         return new Rotate(direction, this, renderer);

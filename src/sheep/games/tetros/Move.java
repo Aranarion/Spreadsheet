@@ -11,12 +11,14 @@ public class Move implements Perform {
     private Tetros tetros;
     private final int direction;
     private Render renderer;
+    private TileDropper tileDropper;
 
-    public Move(int direction, Tetros tetros, Render renderer) {
+    public Move(int direction, Tetros tetros, Render renderer, TileDropper tileDropper) {
 
         this.direction = direction;
         this.tetros = tetros;
         this.renderer = renderer;
+        this.tileDropper = tileDropper;
     }
 
     @Override
@@ -43,7 +45,7 @@ public class Move implements Perform {
         tetros.newContents(newContents);
     }
     private void fullDrop() {
-        while (!tetros.dropTile()) {
+        while (!tileDropper.dropTile()) {
         }
     }
 }
