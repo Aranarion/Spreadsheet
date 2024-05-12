@@ -12,7 +12,7 @@ public class GameStart implements Perform {
     }
     @Override
     public void perform(int row, int column, Prompt prompt) {
-        tetros.Start();
+        tetros.updateStarted();
         tileCreator.drop();
     }
 }

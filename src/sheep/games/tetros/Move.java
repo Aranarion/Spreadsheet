@@ -23,7 +23,7 @@ public class Move implements Perform {
 
     @Override
     public void perform(int row, int column, Prompt prompt) {
-        if (!tetros.hasStarted()) {
+        if (!tetros.getStarted()) {
             return;
         }
         shift(direction);

@@ -82,10 +82,10 @@ public class Tetros implements Tick, Feature {
     public Perform getStart() {
         return new GameStart(this, tileCreator);
     }
-    public boolean hasStarted() {
+    public boolean getStarted() {
         return started;
     }
-    public void Start() {
+    public void updateStarted() {
         started = true;
     }
 

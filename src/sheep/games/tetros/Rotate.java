@@ -20,7 +20,7 @@ public class Rotate implements Perform {
 
     @Override
     public void perform(int row, int column, Prompt prompt) {
-        if (!tetros.hasStarted()) {
+        if (!tetros.getStarted()) {
             return;
         }
         flip(direction);
