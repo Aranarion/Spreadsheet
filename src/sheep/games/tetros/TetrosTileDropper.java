@@ -23,11 +23,11 @@ public class TetrosTileDropper implements TileDropper {
         renderer.unrender(tetros.accessContents());
         for (CellLocation newLoc : newContents) {
             if (isStopper(newLoc)) {
-                renderer.ununrender(tetros.accessContents());
+                renderer.render(tetros.accessContents());
                 return true;
             }
         }
-        renderer.ununrender(newContents);
+        renderer.render(newContents);
         tetros.newContents(newContents);
         return false;
     }

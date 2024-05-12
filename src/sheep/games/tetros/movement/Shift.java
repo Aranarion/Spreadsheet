@@ -32,7 +32,7 @@ public class Shift extends Movement {
             return;
         }
         renderer.unrender(tetros.accessContents());
-        renderer.ununrender(newContents);
+        renderer.render(newContents);
         tetros.newContents(newContents);
     }
     private void fullDrop() {

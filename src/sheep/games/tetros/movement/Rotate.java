@@ -4,8 +4,6 @@ import sheep.games.tetros.Render;
 import sheep.games.tetros.Tetros;
 import sheep.sheets.CellLocation;
 import sheep.sheets.Sheet;
-import sheep.ui.Perform;
-import sheep.ui.Prompt;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +36,6 @@ public class Rotate extends Movement {
         }
         renderer.unrender(tetros.accessContents());
         tetros.newContents(newCells);
-        renderer.ununrender(newCells);
+        renderer.render(newCells);
     }
 }

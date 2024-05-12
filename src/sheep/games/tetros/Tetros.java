@@ -24,7 +24,7 @@ public class Tetros implements Tick, Feature {
     public Tetros(Sheet sheet, RandomTile randomTile) {
         this.sheet = sheet;
         this.randomTile = randomTile;
-        this.renderer = new Render(sheet, this);
+        this.renderer = new TetrosRender(sheet, this);
         this.tileDropper = new TetrosTileDropper(sheet, this, renderer);
         this.tileClearer = new TetrosTileClearer(this, sheet);
         this.tileCreator = new TetrosTileCreator(this, sheet, renderer, randomTile);

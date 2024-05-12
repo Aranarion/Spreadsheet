@@ -35,7 +35,7 @@ public class TetrosTileCreator implements TileCreator {
                 return true;
             }
         }
-        renderer.ununrender(tetros.accessContents());
+        renderer.render(tetros.accessContents());
 
         return false;
     }
