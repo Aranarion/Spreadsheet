@@ -5,8 +5,8 @@ import sheep.sheets.CellLocation;
 import sheep.sheets.Sheet;
 
 public class TetrosTileClearer implements TileClearer {
-    private Tetros tetros;
-    private Sheet sheet;
+    private final Tetros tetros;
+    private final Sheet sheet;
     public TetrosTileClearer(Tetros tetros, Sheet sheet){
         this.tetros = tetros;
         this.sheet = sheet;
@@ -15,7 +15,7 @@ public class TetrosTileClearer implements TileClearer {
         for (int row = sheet.getRows() - 1; row >= 0; row--) {
             boolean full = true;
             for (int col = 0 ; col < sheet.getColumns(); col++) {
-                if (sheet.valueAt(row, col).getContent().equals("")) {
+                if (sheet.valueAt(row, col).getContent().isEmpty()) {
                     full = false;
                 }
             }

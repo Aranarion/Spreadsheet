@@ -7,9 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TetrosTileDropper implements TileDropper {
-    private Tetros tetros;
-    private Render renderer;
-    private Sheet sheet;
+    private final Tetros tetros;
+    private final Render renderer;
+    private final Sheet sheet;
     public TetrosTileDropper(Sheet sheet, Tetros tetros, Render renderer) {
         this.tetros = tetros;
         this.renderer = renderer;
@@ -38,6 +38,6 @@ public class TetrosTileDropper implements TileDropper {
         if (location.getColumn() >= sheet.getColumns()) {
             return true;
         }
-        return !sheet.valueAt(location.getRow(), location.getColumn()).getContent().equals("");
+        return !sheet.valueAt(location.getRow(), location.getColumn()).getContent().isEmpty();
     }
 }

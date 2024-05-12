@@ -9,8 +9,8 @@ import sheep.sheets.Sheet;
 import java.util.List;
 
 public class TetrosRender implements Render {
-    private Sheet sheet;
-    private Tetros tetros;
+    private final Sheet sheet;
+    private final Tetros tetros;
     public TetrosRender(Sheet sheet, Tetros tetros) {
         this.sheet = sheet;
         this.tetros = tetros;

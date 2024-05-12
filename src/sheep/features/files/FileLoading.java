@@ -12,8 +12,7 @@ import java.util.Optional;
 
 public class FileLoading implements Feature, Perform, OnChange {
     private final Sheet sheet;
-    private String filePath;
-    private boolean error = false;
+
     public FileLoading (Sheet sheet) {
         this.sheet = sheet;
     }
@@ -22,14 +21,10 @@ public class FileLoading implements Feature, Perform, OnChange {
             ui.addFeature("load-file", "Load File", this);
     }
 
-    public boolean onChange(Prompt prompt) {
-        prompt.message("An error has been made");
-        error = false;
-        return false;
+    @Override
+    public void change(Prompt prompt) {
     }
 
-    @Override
-    public void change(Prompt prompt) {}
     private void loadFile(String filePath) throws IOException {
         sheet.clear();
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
@@ -45,11 +40,9 @@ public class FileLoading implements Feature, Perform, OnChange {
             for (int j = 0; j < rows; j++) {
                 line = reader.readLine();
                 line = line.replaceAll("\\|", " , ");
-                if (line != null) {
-                    String[] expressions = line.split(",");
-                    for (int i = 0; i < columns; i++) {
-                        sheet.update(j, i, expressions[i].trim());
-                    }
+                String[] expressions = line.split(",");
+                for (int i = 0; i < columns; i++) {
+                    sheet.update(j, i, expressions[i].trim());
                 }
             }
         } catch (FileNotFoundException e) {
@@ -61,17 +54,11 @@ public class FileLoading implements Feature, Perform, OnChange {
     @Override
     public void perform(int row, int column, Prompt prompt) {
         Optional<String> path = prompt.ask("File Path: ");
-        if (path.isPresent()) {
-            filePath = path.get();
-        } else {
-            filePath = "";
-        }
+        String filePath;
+        filePath = path.orElse("");
         try {
             loadFile(filePath);
-        } catch (FileNotFoundException e) {
-            prompt.message("An error has occurred.");
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             prompt.message("An error has occurred.");
         }
     }

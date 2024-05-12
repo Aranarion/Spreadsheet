@@ -13,10 +13,10 @@ import java.util.*;
 public class Tetros implements Tick, Feature {
     private final Sheet sheet;
     private boolean started = false;
-    private Render renderer;
-    private TileDropper tileDropper;
-    private TileClearer tileClearer;
-    private TileCreator tileCreator;
+    private final Render renderer;
+    private final TileDropper tileDropper;
+    private final TileClearer tileClearer;
+    private final TileCreator tileCreator;
     private int fallingType = 1;
     private List<CellLocation> contents = new ArrayList<>();
     public final RandomTile randomTile;

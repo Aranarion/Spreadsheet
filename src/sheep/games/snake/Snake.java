@@ -2,22 +2,18 @@ package sheep.games.snake;
 
 import sheep.features.Feature;
 import sheep.games.random.RandomCell;
-import sheep.games.random.RandomFreeCell;
-import sheep.sheets.CellLocation;
 import sheep.sheets.Sheet;
 import sheep.ui.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class Snake implements Feature, Tick, OnChange {
-    private Sheet sheet;
-    private int length;
+    private final Sheet sheet;
     private List<String> snakeCoordinates = new ArrayList<>();
     private String direction = "down";
     private Boolean started = false;
-    private RandomCell randomCell;
+    private final RandomCell randomCell;
     private boolean consumedFood = false;
     private boolean ended = false;
     public Snake(Sheet sheet, RandomCell randomCell) {
@@ -39,27 +35,27 @@ public class Snake implements Feature, Tick, OnChange {
     @Override
     public boolean onTick(Prompt prompt) {
         boolean newFood = false;
-        if (started == false) {
+        if (!started) {
             return false;
         } else {
             String nextTile = nextTile();
-            if (outOfBounds(nextTile) == true) {
+            if (outOfBounds(nextTile)) {
                 started = false;
                 prompt.message("Game Over!");
                 snakeCoordinates = new ArrayList<>();
                 return true;
             }
-            if (consumedFood == false) {
-                sheet.update(tileRow(snakeCoordinates.get(0)), tileColumn(snakeCoordinates.get(0)), "");
-                snakeCoordinates.remove(0);
+            if (!consumedFood) {
+                sheet.update(tileRow(snakeCoordinates.getFirst()), tileColumn(snakeCoordinates.getFirst()), "");
+                snakeCoordinates.removeFirst();
             } else {
                 consumedFood = false;
             }
-            if (foodOnTile(nextTile) == true) {
+            if (foodOnTile(nextTile)) {
                 newFood = true;
                 consumedFood = true;
             }
-            if (snakeEatsItself(nextTile) == true) {
+            if (snakeEatsItself(nextTile)) {
                 started = false;
                 prompt.message("Game Over!");
                 snakeCoordinates = new ArrayList<>();
@@ -67,9 +63,8 @@ public class Snake implements Feature, Tick, OnChange {
             }
             sheet.update(tileRow(nextTile), tileColumn(nextTile), "1");
             snakeCoordinates.add(nextTile);
-            if (newFood == true) {
+            if (newFood) {
                 newFood();
-                newFood = false;
             }
             return true;
         }
@@ -88,65 +83,47 @@ public class Snake implements Feature, Tick, OnChange {
         return Integer.parseInt(coordinates.split(",")[1]);
     }
     public String nextTile() {
-        int currentRow = Integer.parseInt(snakeCoordinates.get(snakeCoordinates.size() - 1).split(",")[0]);
-        int currentColumn = Integer.parseInt(snakeCoordinates.get(snakeCoordinates.size() - 1).split(",")[1]);
-        if (direction == "up") {
-            return (currentRow - 1) + "," + currentColumn;
-        } else if (direction == "down") {
-            return (currentRow + 1) + "," + currentColumn;
-        } else if (direction == "right") {
-            return currentRow + "," + (currentColumn + 1);
-        } else {
-            return currentRow + "," + (currentColumn - 1);
-        }
+        int currentRow = Integer.parseInt(snakeCoordinates.getLast().split(",")[0]);
+        int currentColumn = Integer.parseInt(snakeCoordinates.getLast().split(",")[1]);
+        return switch (direction) {
+            case "up" -> (currentRow - 1) + "," + currentColumn;
+            case "down" -> (currentRow + 1) + "," + currentColumn;
+            case "right" -> currentRow + "," + (currentColumn + 1);
+            case null, default -> currentRow + "," + (currentColumn - 1);
+        };
     }
     public boolean foodOnTile(String coordinates) {
         int row = Integer.parseInt(coordinates.split(",")[0]);
         int column = Integer.parseInt(coordinates.split(",")[1]);
-        if (sheet.valueAt(row, column).getContent().equals("2")) {
-            return true;
-        }
-        else {
-            return false;
-        }
+        return sheet.valueAt(row, column).getContent().equals("2");
     }
     public boolean snakeEatsItself(String coordinates) {
         int row = Integer.parseInt(coordinates.split(",")[0]);
         int column = Integer.parseInt(coordinates.split(",")[1]);
-        if (sheet.valueAt(row, column).getContent().equals("1")) {
-            return true;
-        }
-        else {
-            return false;
-        }
+        return sheet.valueAt(row, column).getContent().equals("1");
     }
     public boolean outOfBounds(String coordinates) {
         int row = Integer.parseInt(coordinates.split(",")[0]);
         int column = Integer.parseInt(coordinates.split(",")[1]);
-        if (row < 0 || column < 0 || row >= sheet.getRows() || column >= sheet.getColumns()) {
-            return true;
-        } else {
-            return false;
-        }
+        return row < 0 || column < 0 || row >= sheet.getRows() || column >= sheet.getColumns();
     }
 
     public void setUp() {
         for (int i = 0; i < sheet.getRows(); i++) {
             for (int j = 0; j < sheet.getColumns(); j++) {
                 if (sheet.valueAt(i, j).getContent().isEmpty()) {
-                    continue;
                 } else {
                     sheet.update(i, j, "2");
                 }
             }
         }
-        String[] initialCoordinates = snakeCoordinates.get(0).split(",");
+        String[] initialCoordinates = snakeCoordinates.getFirst().split(",");
         sheet.update(Integer.parseInt(initialCoordinates[0]), Integer.parseInt(initialCoordinates[1]), "1");
     }
 
     @Override
     public void change(Prompt prompt) {
-        if (ended == true && started == true) {
+        if (ended && started) {
             prompt.message("Game Over!");
             started = false;
             ended = false;
@@ -166,13 +143,7 @@ public class Snake implements Feature, Tick, OnChange {
             started = true;
         }
     }
-    public class SnakeEnd implements Perform {
-        @Override
-        public void perform(int row, int column, Prompt prompt) {
-            prompt.message("Game Over!");
-            started = false;
-        }
-    }
+
     public class Up implements Perform {
 
         @Override

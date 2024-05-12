@@ -10,8 +10,8 @@ import java.util.List;
 
 public abstract class Movement implements Perform {
     protected Tetros tetros;
-    private int direction;
-    private Sheet sheet;
+    private final int direction;
+    private final Sheet sheet;
     public Movement(Tetros tetros, int direction, Sheet sheet) {
         this.tetros = tetros;
         this.direction = direction;
@@ -25,12 +25,12 @@ public abstract class Movement implements Perform {
         apply(direction);
     }
     abstract void apply(int direction);
-    public boolean inBounds(List<CellLocation> locations) {
+    public boolean outOfBounds(List<CellLocation> locations) {
         for (CellLocation location : locations) {
             if (!sheet.contains(location)) {
-                return false;
+                return true;
             }
         }
-        return true;
+        return false;
     }
 }

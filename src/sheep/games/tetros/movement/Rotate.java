@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Rotate extends Movement {
-    private Render renderer;
+    private final Render renderer;
 
     public Rotate(int direction, Tetros tetros, Render renderer, Sheet sheet) {
         super(tetros, direction, sheet);
@@ -31,7 +31,7 @@ public class Rotate extends Movement {
             CellLocation replacement = new CellLocation(ly, lx);
             newCells.add(replacement);
         }
-        if (!super.inBounds(newCells)) {
+        if (super.outOfBounds(newCells)) {
             return;
         }
         renderer.unrender(tetros.accessContents());

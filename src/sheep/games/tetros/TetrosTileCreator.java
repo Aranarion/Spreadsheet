@@ -8,10 +8,10 @@ import sheep.sheets.Sheet;
 import java.util.ArrayList;
 
 public class TetrosTileCreator implements TileCreator {
-    private Tetros tetros;
-    private Sheet sheet;
-    private Render renderer;
-    private RandomTile randomTile;
+    private final Tetros tetros;
+    private final Sheet sheet;
+    private final Render renderer;
+    private final RandomTile randomTile;
     private final PieceGenerator[] pieceGenerators = {
             new PieceZero(),
             new PieceOne(),
@@ -31,7 +31,7 @@ public class TetrosTileCreator implements TileCreator {
         tetros.newContents(new ArrayList<>());
         newPiece();
         for (CellLocation location : tetros.accessContents()) {
-            if (!sheet.valueAt(location).render().equals("")) {
+            if (!sheet.valueAt(location).render().isEmpty()) {
                 return true;
             }
         }

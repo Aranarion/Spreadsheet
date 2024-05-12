@@ -4,8 +4,8 @@ import sheep.ui.Perform;
 import sheep.ui.Prompt;
 
 public class GameStart implements Perform {
-    private Tetros tetros;
-    private TileCreator tileCreator;
+    private final Tetros tetros;
+    private final TileCreator tileCreator;
     public GameStart(Tetros tetros, TileCreator tileCreator) {
         this.tetros = tetros;
         this.tileCreator = tileCreator;

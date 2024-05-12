@@ -10,8 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Shift extends Movement {
-    private Render renderer;
-    private TileDropper tileDropper;
+    private final Render renderer;
+    private final TileDropper tileDropper;
 
     public Shift(int direction, Tetros tetros, Render renderer, TileDropper tileDropper, Sheet sheet) {
         super(tetros, direction, sheet);
@@ -28,7 +28,7 @@ public class Shift extends Movement {
         for (CellLocation tile : tetros.accessContents()) {
             newContents.add(new CellLocation(tile.getRow(), tile.getColumn() + direction));
         }
-        if (!super.inBounds(newContents)) {
+        if (super.outOfBounds(newContents)) {
             return;
         }
         renderer.unrender(tetros.accessContents());

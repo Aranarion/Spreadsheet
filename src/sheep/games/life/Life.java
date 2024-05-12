@@ -8,7 +8,7 @@ import sheep.ui.Tick;
 import sheep.ui.UI;
 
 public class Life implements Feature, Tick {
-    private Sheet sheet;
+    private final Sheet sheet;
     private boolean started = false;
     public Life (Sheet sheet) {
         this.sheet = sheet;
@@ -49,17 +49,9 @@ public class Life implements Feature, Tick {
     public boolean onNextTurn(int row, int column, boolean on, Sheet previousSheet) {
         int numberNeighbours = numberNeighbour(row, column, previousSheet);
         if (on) {
-            if ((numberNeighbours) < 2 || numberNeighbours > 3) {
-                return false;
-            } else {
-                return true;
-            }
+            return (numberNeighbours) >= 2 && numberNeighbours <= 3;
         } else {
-            if (numberNeighbours == 3) {
-                return true;
-            } else {
-                return false;
-            }
+            return numberNeighbours == 3;
         }
     }
     public void updateSheet() {
@@ -67,13 +59,9 @@ public class Life implements Feature, Tick {
         for (int i = 0; i < sheet.getRows(); i++) {
             for (int j = 0; j < sheet.getColumns(); j++) {
                 boolean currentlyOn;
-                if (sheet.valueAt(i, j).getContent().equals("1")) {
-                    currentlyOn = true;
-                } else {
-                    currentlyOn = false;
-                }
+                currentlyOn = sheet.valueAt(i, j).getContent().equals("1");
                 boolean turn = onNextTurn(i, j, currentlyOn, sheet);
-                if (turn == true) {
+                if (turn) {
                     newSheet[i][j] = "1";
                 } else {
                     newSheet[i][j] = "";

@@ -11,7 +11,6 @@ import java.util.Optional;
 
 public class FileSaving implements Feature, Tick, Perform {
     private final Sheet sheet;
-    private String filePath;
     private boolean error = false;
     public FileSaving(Sheet sheet) {
         this.sheet = sheet;
@@ -23,7 +22,7 @@ public class FileSaving implements Feature, Tick, Perform {
     }
     @Override
     public boolean onTick(Prompt prompt) {
-        if (error == true) {
+        if (error) {
             prompt.message("An error has been made");
             error = false;
         }
@@ -40,11 +39,8 @@ public class FileSaving implements Feature, Tick, Perform {
     @Override
     public void perform(int row, int column, Prompt prompt) {
         Optional<String> path = prompt.ask("File Path: ");
-        if (path.isPresent()) {
-            filePath = path.get();
-        } else {
-            filePath = "";
-        }
+        String filePath;
+        filePath = path.orElse("");
         try {
             saveFile(filePath);
         } catch (IOException e)
