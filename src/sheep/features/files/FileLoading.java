@@ -10,15 +10,23 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Optional;
 
+/**
+ * This class allows files to be loaded onto the Sheep
+ */
 public class FileLoading implements Feature, Perform, OnChange {
     private final Sheet sheet;
 
-    public FileLoading (Sheet sheet) {
+    /**
+     * Constructor of file loading which takes a sheet.
+     * @param sheet current spreadsheet used
+     */
+    public FileLoading(Sheet sheet) {
         this.sheet = sheet;
     }
+
     @Override
     public void register(UI ui) {
-            ui.addFeature("load-file", "Load File", this);
+        ui.addFeature("load-file", "Load File", this);
     }
 
     @Override
@@ -51,6 +59,7 @@ public class FileLoading implements Feature, Perform, OnChange {
             throw new IOException();
         }
     }
+
     @Override
     public void perform(int row, int column, Prompt prompt) {
         Optional<String> path = prompt.ask("File Path: ");
