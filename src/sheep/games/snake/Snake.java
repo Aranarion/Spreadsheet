@@ -24,7 +24,7 @@ public class Snake implements Feature, Tick, OnChange {
     @Override
     public void register(UI ui) {
         ui.onTick(this);
-        ui.addFeature("snake", "Start Snake", new SnakeStart());
+        ui.addFeature("snake", "Start Snake", new SnakeStart(this, sheet));
         ui.onKey("w", "Up", new Up(this));
         ui.onKey("s", "Down", new Down(this));
         ui.onKey("a", "Left", new Left(this));
@@ -133,17 +133,15 @@ public class Snake implements Feature, Tick, OnChange {
         direction = newDirection;
     }
 
-    public class SnakeStart implements Perform {
+    public void updateSnakeCoordinates(String coordinates) {
+        snakeCoordinates.add(coordinates);
+    }
 
-        @Override
-        public void perform(int row, int column, Prompt prompt) {
-            if (row == -2 || column == -2) {
-                row = 0;
-                column = 0;
-            }
-            snakeCoordinates.add(row + "," + column);
-            setUp();
-            started = true;
-        }
+    public List<String> getSnakeCoordinates() {
+        return snakeCoordinates;
+    }
+
+    public void updateStarted(boolean nowStarted) {
+        started = nowStarted;
     }
 }
