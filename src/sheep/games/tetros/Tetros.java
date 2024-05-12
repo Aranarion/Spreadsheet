@@ -40,14 +40,6 @@ public class Tetros implements Tick, Feature {
         ui.onKey("e", "Rotate Right", this.getRotate(1));
         ui.onKey("s", "Drop", this.getMove(0));
     }
-    public boolean inBounds(List<CellLocation> locations) {
-        for (CellLocation location : locations) {
-            if (!sheet.contains(location)) {
-                return false;
-            }
-        }
-        return true;
-    }
     public List<CellLocation> accessContents() {
         return contents;
     }
@@ -88,9 +80,9 @@ public class Tetros implements Tick, Feature {
     }
 
     public Perform getMove(int direction) {
-        return new Move(direction, this, renderer, tileDropper);
+        return new Move(direction, this, renderer, tileDropper, sheet);
     }
     public Perform getRotate(int direction) {
-        return new Rotate(direction, this, renderer);
+        return new Rotate(direction, this, renderer, sheet);
     }
 }

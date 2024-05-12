@@ -3,6 +3,7 @@ package sheep.games.tetros.movement;
 import sheep.games.tetros.Render;
 import sheep.games.tetros.Tetros;
 import sheep.sheets.CellLocation;
+import sheep.sheets.Sheet;
 import sheep.ui.Perform;
 import sheep.ui.Prompt;
 
@@ -12,8 +13,8 @@ import java.util.List;
 public class Rotate extends Movement {
     private Render renderer;
 
-    public Rotate(int direction, Tetros tetros, Render renderer) {
-        super(tetros, direction);
+    public Rotate(int direction, Tetros tetros, Render renderer, Sheet sheet) {
+        super(tetros, direction, sheet);
         this.renderer = renderer;
     }
     @Override
@@ -32,7 +33,7 @@ public class Rotate extends Movement {
             CellLocation replacement = new CellLocation(ly, lx);
             newCells.add(replacement);
         }
-        if (!tetros.inBounds(newCells)) {
+        if (!super.inBounds(newCells)) {
             return;
         }
         renderer.unrender(tetros.accessContents());

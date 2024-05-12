@@ -5,6 +5,7 @@ import sheep.games.tetros.Tetros;
 import sheep.games.tetros.TileDropper;
 import sheep.games.tetros.movement.Movement;
 import sheep.sheets.CellLocation;
+import sheep.sheets.Sheet;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,8 +14,8 @@ public class Move extends Movement {
     private Render renderer;
     private TileDropper tileDropper;
 
-    public Move(int direction, Tetros tetros, Render renderer, TileDropper tileDropper) {
-        super(tetros, direction);
+    public Move(int direction, Tetros tetros, Render renderer, TileDropper tileDropper, Sheet sheet) {
+        super(tetros, direction, sheet);
         this.renderer = renderer;
         this.tileDropper = tileDropper;
     }
@@ -28,7 +29,7 @@ public class Move extends Movement {
         for (CellLocation tile : tetros.accessContents()) {
             newContents.add(new CellLocation(tile.getRow(), tile.getColumn() + direction));
         }
-        if (!tetros.inBounds(newContents)) {
+        if (!super.inBounds(newContents)) {
             return;
         }
         renderer.unrender(tetros.accessContents());
