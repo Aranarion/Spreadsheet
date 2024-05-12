@@ -4,6 +4,9 @@ import sheep.sheets.CellLocation;
 
 import java.util.List;
 
+/**
+ * Constructs tetros piece 4
+ */
 public class PieceFour implements PieceGenerator {
     @Override
     public void generatePiece(List<CellLocation> contents) {
@@ -12,6 +15,7 @@ public class PieceFour implements PieceGenerator {
         contents.add(new CellLocation(1, 0));
         contents.add(new CellLocation(1, 1));
     }
+
     @Override
     public int generateFallingType() {
         return 3;

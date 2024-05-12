@@ -8,6 +8,9 @@ import sheep.ui.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Controls the snake feature
+ */
 public class Snake implements Feature, Tick, OnChange {
     private final Sheet sheet;
     private List<String> snakeCoordinates = new ArrayList<>();
@@ -16,6 +19,12 @@ public class Snake implements Feature, Tick, OnChange {
     private final RandomCell randomCell;
     private boolean consumedFood = false;
     private boolean ended = false;
+
+    /**
+     * Constructs the snake class
+     * @param sheet the current  sheet's ieration
+     * @param randomCell the current random cell implementation
+     */
     public Snake(Sheet sheet, RandomCell randomCell) {
         this.sheet = sheet;
         this.randomCell = randomCell;
@@ -46,7 +55,8 @@ public class Snake implements Feature, Tick, OnChange {
                 return true;
             }
             if (!consumedFood) {
-                sheet.update(tileRow(snakeCoordinates.getFirst()), tileColumn(snakeCoordinates.getFirst()), "");
+                sheet.update(tileRow(snakeCoordinates.getFirst()),
+                        tileColumn(snakeCoordinates.getFirst()), "");
                 snakeCoordinates.removeFirst();
             } else {
                 consumedFood = false;
