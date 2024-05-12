@@ -69,22 +69,22 @@ public class Tetros implements Tick, Feature {
         }
     }
 
-    private void shift(int x) {
-        if (x == 0) {
-            fullDrop();
-            return;
-        }
-        List<CellLocation> newContents = new ArrayList<>();
-            for (CellLocation tile : accessContents()) {
-                newContents.add(new CellLocation(tile.getRow(), tile.getColumn() + x));
-            }
-        if (!inBounds(newContents)) {
-            return;
-        }
-        unrender();
-        ununrender(newContents);
-        newContents(newContents);
-    }
+  //  private void shift(int x) {
+   //     if (x == 0) {
+   //         fullDrop();
+   //         return;
+    //    }
+    //    List<CellLocation> newContents = new ArrayList<>();
+    //        for (CellLocation tile : accessContents()) {
+    //            newContents.add(new CellLocation(tile.getRow(), tile.getColumn() + x));
+   //         }
+   //     if (!inBounds(newContents)) {
+   //         return;
+  //      }
+   //     unrender();
+  //      ununrender(newContents);
+  //      newContents(newContents);
+    //}
 
     public void unrender() {
         for (CellLocation cell : contents) {
@@ -262,7 +262,7 @@ public class Tetros implements Tick, Feature {
     }
 
     public Perform getMove(int direction) {
-        return new Move(direction);
+        return new Move(direction, this);
     }
     public Perform getRotate(int direction) {
         return new Rotate(direction);
@@ -272,21 +272,6 @@ public class Tetros implements Tick, Feature {
        public void perform(int row, int column, Prompt prompt) {
             started = true;
             drop();
-        }
-    }
-    public class Move implements Perform {
-        private final int direction;
-
-        public Move(int direction) {
-            this.direction = direction;
-        }
-
-        @Override
-        public void perform(int row, int column, Prompt prompt) {
-            if (!hasStarted()) {
-                return;
-            }
-            shift(direction);
         }
     }
 
