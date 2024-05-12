@@ -1,11 +1,9 @@
 package sheep.games.tetros;
 
-import sheep.expression.TypeError;
-import sheep.expression.basic.Constant;
-import sheep.expression.basic.Nothing;
 import sheep.features.Feature;
 import sheep.games.random.RandomTile;
-import sheep.games.tetros.piecegenerator.*;
+import sheep.games.tetros.movement.Move;
+import sheep.games.tetros.movement.Rotate;
 import sheep.sheets.CellLocation;
 import sheep.sheets.Sheet;
 import sheep.ui.*;

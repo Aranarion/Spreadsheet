@@ -1,41 +1,33 @@
-package sheep.games.tetros;
+package sheep.games.tetros.movement;
 
+import sheep.games.tetros.Render;
+import sheep.games.tetros.Tetros;
+import sheep.games.tetros.TileDropper;
+import sheep.games.tetros.movement.Movement;
 import sheep.sheets.CellLocation;
-import sheep.ui.Perform;
-import sheep.ui.Prompt;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Move implements Perform {
-    private Tetros tetros;
-    private final int direction;
+public class Move extends Movement {
     private Render renderer;
     private TileDropper tileDropper;
 
     public Move(int direction, Tetros tetros, Render renderer, TileDropper tileDropper) {
 
-        this.direction = direction;
-        this.tetros = tetros;
+        super(tetros, direction);
         this.renderer = renderer;
         this.tileDropper = tileDropper;
     }
-
     @Override
-    public void perform(int row, int column, Prompt prompt) {
-        if (!tetros.getStarted()) {
-            return;
-        }
-        shift(direction);
-    }
-    private void shift(int x) {
-        if (x == 0) {
+    void apply(int direction) {
+        if (direction == 0) {
             fullDrop();
             return;
         }
         List<CellLocation> newContents = new ArrayList<>();
         for (CellLocation tile : tetros.accessContents()) {
-            newContents.add(new CellLocation(tile.getRow(), tile.getColumn() + x));
+            newContents.add(new CellLocation(tile.getRow(), tile.getColumn() + direction));
         }
         if (!tetros.inBounds(newContents)) {
             return;

@@ -1,5 +1,7 @@
-package sheep.games.tetros;
+package sheep.games.tetros.movement;
 
+import sheep.games.tetros.Render;
+import sheep.games.tetros.Tetros;
 import sheep.sheets.CellLocation;
 import sheep.ui.Perform;
 import sheep.ui.Prompt;
@@ -23,9 +25,9 @@ public class Rotate implements Perform {
         if (!tetros.getStarted()) {
             return;
         }
-        flip(direction);
+        apply(direction);
     }
-    private void flip(int direction) {
+    private void apply(int direction) {
         int x = 0;
         int y = 0;
         for (CellLocation cellLocation : tetros.accessContents()) {
