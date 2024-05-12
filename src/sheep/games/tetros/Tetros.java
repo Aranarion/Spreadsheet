@@ -2,7 +2,7 @@ package sheep.games.tetros;
 
 import sheep.features.Feature;
 import sheep.games.random.RandomTile;
-import sheep.games.tetros.movement.Move;
+import sheep.games.tetros.movement.Shift;
 import sheep.games.tetros.movement.Rotate;
 import sheep.sheets.CellLocation;
 import sheep.sheets.Sheet;
@@ -80,7 +80,7 @@ public class Tetros implements Tick, Feature {
     }
 
     public Perform getMove(int direction) {
-        return new Move(direction, this, renderer, tileDropper, sheet);
+        return new Shift(direction, this, renderer, tileDropper, sheet);
     }
     public Perform getRotate(int direction) {
         return new Rotate(direction, this, renderer, sheet);
