@@ -5,6 +5,7 @@ import sheep.expression.basic.Constant;
 import sheep.expression.basic.Nothing;
 import sheep.features.Feature;
 import sheep.games.random.RandomTile;
+import sheep.games.tetros.piecegenerator.*;
 import sheep.sheets.CellLocation;
 import sheep.sheets.Sheet;
 import sheep.ui.*;
@@ -15,6 +16,15 @@ public class Tetros implements Tick, Feature {
     private final Sheet sheet;
     private boolean started = false;
     private Render renderer;
+    private final PieceGenerator[] pieceGenerators = {
+            new PieceZero(),
+            new PieceOne(),
+            new PieceTwo(),
+            new PieceThree(),
+            new PieceFour(),
+            new PieceFive(),
+            new PieceSix()
+    };
 
     @Override
     public void register(UI ui) {
