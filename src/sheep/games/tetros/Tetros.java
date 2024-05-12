@@ -14,6 +14,7 @@ import java.util.*;
 public class Tetros implements Tick, Feature {
     private final Sheet sheet;
     private boolean started = false;
+    private Render renderer;
 
     @Override
     public void register(UI ui) {
@@ -51,26 +52,16 @@ public class Tetros implements Tick, Feature {
         for (CellLocation tile : contents) {
             newContents.add(new CellLocation(tile.getRow() + 1, tile.getColumn()));
         }
-        unrender();
+        renderer.unrender(contents);
         for (CellLocation newLoc : newContents) {
             if (isStopper(newLoc)) {
-                ununrender(contents);
+                renderer.ununrender(contents);
                 return true;
             }
         }
-        ununrender(newContents);
+        renderer.ununrender(newContents);
         this.contents = newContents;
         return false;
-    }
-
-    public void unrender() {
-        for (CellLocation cell : contents) {
-            try {
-                sheet.update(cell, new Nothing());
-            } catch (TypeError e) {
-                throw new RuntimeException(e);
-            }
-        }
     }
     public List<CellLocation> accessContents() {
         return contents;
@@ -78,24 +69,15 @@ public class Tetros implements Tick, Feature {
     public void newContents(List<CellLocation> newContents) {
         contents = newContents;
     }
-    public void ununrender(List<CellLocation> items) {
-        if (items.isEmpty()) {
-            return;
-        }
-        for (CellLocation cell : items) {
-            try {
-                sheet.update(cell, new Constant(fallingType));
-            } catch (TypeError e) {
-                throw new RuntimeException(e);
-            }
-        }
+    public int getFallingType() {
+        return fallingType;
     }
-
     public final RandomTile randomTile;
 
     public Tetros(Sheet sheet, RandomTile randomTile) {
         this.sheet = sheet;
         this.randomTile = randomTile;
+        this.renderer = new Render(sheet, this);
     }
 
     public boolean drop() {
@@ -106,7 +88,7 @@ public class Tetros implements Tick, Feature {
                 return true;
             }
         }
-        ununrender(contents);
+        renderer.ununrender(contents);
 
         return false;
     }
@@ -218,9 +200,9 @@ public class Tetros implements Tick, Feature {
     }
 
     public Perform getMove(int direction) {
-        return new Move(direction, this);
+        return new Move(direction, this, renderer);
     }
     public Perform getRotate(int direction) {
-        return new Rotate(direction, this);
+        return new Rotate(direction, this, renderer);
     }
 }

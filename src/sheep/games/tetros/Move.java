@@ -10,11 +10,13 @@ import java.util.List;
 public class Move implements Perform {
     private Tetros tetros;
     private final int direction;
+    private Render renderer;
 
-    public Move(int direction, Tetros tetros) {
+    public Move(int direction, Tetros tetros, Render renderer) {
 
         this.direction = direction;
         this.tetros = tetros;
+        this.renderer = renderer;
     }
 
     @Override
@@ -36,8 +38,8 @@ public class Move implements Perform {
         if (!tetros.inBounds(newContents)) {
             return;
         }
-        tetros.unrender();
-        tetros.ununrender(newContents);
+        renderer.unrender(tetros.accessContents());
+        renderer.ununrender(newContents);
         tetros.newContents(newContents);
     }
     private void fullDrop() {

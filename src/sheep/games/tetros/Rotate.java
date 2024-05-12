@@ -10,10 +10,12 @@ import java.util.List;
 public class Rotate implements Perform {
     private final int direction;
     private Tetros tetros;
+    private Render renderer;
 
-    public Rotate(int direction, Tetros tetros) {
+    public Rotate(int direction, Tetros tetros, Render renderer) {
         this.direction = direction;
         this.tetros = tetros;
+        this.renderer = renderer;
     }
 
     @Override
@@ -41,8 +43,8 @@ public class Rotate implements Perform {
         if (!tetros.inBounds(newCells)) {
             return;
         }
-        tetros.unrender();
+        renderer.unrender(tetros.accessContents());
         tetros.newContents(newCells);
-        tetros.ununrender(newCells);
+        renderer.ununrender(newCells);
     }
 }
