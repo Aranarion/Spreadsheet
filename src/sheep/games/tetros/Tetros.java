@@ -18,10 +18,10 @@ public class Tetros implements Tick, Feature {
     @Override
     public void register(UI ui) {
         ui.onTick(this);
-        ui.addFeature("tetros", "Start Tetros", new GameStart());
-        ui.onKey("a", "Move Left", new Move(-1));
+        ui.addFeature("tetros", "Start Tetros", this.getStart());
+        ui.onKey("a", "Move Left", this.getMove(-1));
         ui.onKey("d", "Move Right", this.getMove(1));
-        ui.onKey("q", "Rotate Left", new Rotate(-1));
+        ui.onKey("q", "Rotate Left", this.getRotate(-1));
         ui.onKey("e", "Rotate Right", this.getRotate(1));
         ui.onKey("s", "Drop", this.getMove(0));
     }
