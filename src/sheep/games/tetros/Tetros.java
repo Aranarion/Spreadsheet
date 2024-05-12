@@ -38,7 +38,6 @@ public class Tetros implements Tick, Feature {
         }
         return !sheet.valueAt(location.getRow(), location.getColumn()).getContent().equals("");
     }
-
     public boolean inBounds(List<CellLocation> locations) {
         //for (CellLocation location : locations.subList(3, locations.size())) {
         for (CellLocation location : locations) {
@@ -48,7 +47,6 @@ public class Tetros implements Tick, Feature {
         }
         return true;
     }
-
     public boolean dropTile() {
         List<CellLocation> newContents = new ArrayList<>();
         for (CellLocation tile : contents) {
@@ -71,13 +69,13 @@ public class Tetros implements Tick, Feature {
         }
     }
 
-    public void shift(int x) {
+    private void shift(int x) {
         if (x == 0) {
             fullDrop();
             return;
         }
         List<CellLocation> newContents = new ArrayList<>();
-            for (CellLocation tile : contents) {
+            for (CellLocation tile : accessContents()) {
                 newContents.add(new CellLocation(tile.getRow(), tile.getColumn() + x));
             }
         if (!inBounds(newContents)) {
@@ -85,7 +83,7 @@ public class Tetros implements Tick, Feature {
         }
         unrender();
         ununrender(newContents);
-        this.contents = newContents;
+        newContents(newContents);
     }
 
     public void unrender() {
@@ -97,7 +95,12 @@ public class Tetros implements Tick, Feature {
             }
         }
     }
-
+    public List<CellLocation> accessContents() {
+        return contents;
+    }
+    public void newContents(List<CellLocation> newContents) {
+        contents = newContents;
+    }
     public void ununrender(List<CellLocation> items) {
         if (items.isEmpty()) {
             return;
@@ -189,13 +192,13 @@ public class Tetros implements Tick, Feature {
     private void flip(int direction) {
         int x = 0;
         int y = 0;
-        for (CellLocation cellLocation : contents) {
+        for (CellLocation cellLocation : accessContents()) {
             x += cellLocation.getColumn();
             y += cellLocation.getRow();
         }
-        x /= contents.size(); y /= contents.size();
+        x /= accessContents().size(); y /= accessContents().size();
         List<CellLocation> newCells = new ArrayList<>();
-        for (CellLocation location : contents) {
+        for (CellLocation location : accessContents()) {
             int lx = x + ((y -location.getRow())*direction);
             int ly = y + ((x -location.getColumn())*direction);
             CellLocation replacement = new CellLocation(ly, lx);
@@ -205,7 +208,7 @@ public class Tetros implements Tick, Feature {
             return;
         }
         unrender();
-        contents = newCells;
+        newContents(newCells);
         ununrender(newCells);
     }
 
@@ -254,6 +257,9 @@ public class Tetros implements Tick, Feature {
     public Perform getStart() {
         return new GameStart();
     }
+    public boolean hasStarted() {
+        return started;
+    }
 
     public Perform getMove(int direction) {
         return new Move(direction);
@@ -268,7 +274,6 @@ public class Tetros implements Tick, Feature {
             drop();
         }
     }
-
     public class Move implements Perform {
         private final int direction;
 
@@ -278,7 +283,7 @@ public class Tetros implements Tick, Feature {
 
         @Override
         public void perform(int row, int column, Prompt prompt) {
-            if (!started) {
+            if (!hasStarted()) {
                 return;
             }
             shift(direction);
@@ -294,7 +299,7 @@ public class Tetros implements Tick, Feature {
 
         @Override
         public void perform(int row, int column, Prompt prompt) {
-            if (!started) {
+            if (!hasStarted()) {
                 return;
             }
             flip(direction);
