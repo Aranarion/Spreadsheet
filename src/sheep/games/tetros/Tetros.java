@@ -18,17 +18,9 @@ public class Tetros implements Tick, Feature {
     private Render renderer;
     private TileDropper tileDropper;
     private TileClearer tileClearer;
+    private TileCreator tileCreator;
     private int fallingType = 1;
     private List<CellLocation> contents = new ArrayList<>();
-    private final PieceGenerator[] pieceGenerators = {
-            new PieceZero(),
-            new PieceOne(),
-            new PieceTwo(),
-            new PieceThree(),
-            new PieceFour(),
-            new PieceFive(),
-            new PieceSix()
-    };
     public final RandomTile randomTile;
 
     public Tetros(Sheet sheet, RandomTile randomTile) {
@@ -37,6 +29,7 @@ public class Tetros implements Tick, Feature {
         this.renderer = new Render(sheet, this);
         this.tileDropper = new TileDropper(sheet, this, renderer);
         this.tileClearer = new TileClearer(this, sheet);
+        this.tileCreator = new TileCreator(this, sheet, renderer, randomTile);
     }
 
     @Override
@@ -66,25 +59,10 @@ public class Tetros implements Tick, Feature {
     public int getFallingType() {
         return fallingType;
     }
-
-    public boolean drop() {
-        contents = new ArrayList<>();
-        newPiece();
-        for (CellLocation location : contents) {
-            if (!sheet.valueAt(location).render().equals("")) {
-                return true;
-            }
-        }
-        renderer.ununrender(contents);
-
-        return false;
+    public void updateFallingType(int newFallingType) {
+        fallingType = newFallingType;
     }
 
-    private void newPiece() {
-        int value = randomTile.pick();
-        pieceGenerators[value].generatePiece(contents);
-        fallingType = pieceGenerators[value].generateFallingType();
-    }
     @Override
     public boolean onTick(Prompt prompt) {
         if (!started) {
@@ -92,7 +70,7 @@ public class Tetros implements Tick, Feature {
         }
 
         if (tileDropper.dropTile()) {
-            if (drop()) {
+            if (tileCreator.drop()) {
                 prompt.message("Game Over!");
                 started = false;
             }
@@ -102,7 +80,7 @@ public class Tetros implements Tick, Feature {
     }
 
     public Perform getStart() {
-        return new GameStart(this);
+        return new GameStart(this, tileCreator);
     }
     public boolean hasStarted() {
         return started;
