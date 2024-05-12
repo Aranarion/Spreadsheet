@@ -13,24 +13,14 @@ public class Life implements Feature, Tick {
     public Life (Sheet sheet) {
         this.sheet = sheet;
     }
-
+    public void updateStarted(boolean newStarted) {
+        started = newStarted;
+    }
     @Override
     public void register(UI ui) {
         ui.onTick(this);
-        ui.addFeature("gol-start", "GOL Start", new GOLStart());
+        ui.addFeature("gol-start", "GOL Start", new GOLStart(sheet, this));
         ui.addFeature("gol-end", "GOL End", new GOLEnd());
-    }
-
-    public void setUp() {
-        for (int i = 0; i < sheet.getRows(); i++) {
-            for (int j = 0; j < sheet.getColumns(); j++) {
-                if (sheet.valueAt(i, j).getContent().equals("1")) {
-                    sheet.update(i, j, "1");
-                } else {
-                    sheet.update(i, j, "");
-                }
-            }
-        }
     }
     public int numberNeighbour(int row, int column, Sheet previousSheet) {
         int count = 0;
@@ -72,13 +62,6 @@ public class Life implements Feature, Tick {
             for (int j = 0; j < sheet.getColumns(); j++) {
                 sheet.update(i, j, newSheet[i][j]);
             }
-        }
-    }
-    public class GOLStart implements Perform {
-        @Override
-        public void perform(int row, int column, Prompt prompt) {
-            setUp();
-            started = true;
         }
     }
     public class GOLEnd implements Perform {
