@@ -14,7 +14,6 @@ public class Move extends Movement {
     private TileDropper tileDropper;
 
     public Move(int direction, Tetros tetros, Render renderer, TileDropper tileDropper) {
-
         super(tetros, direction);
         this.renderer = renderer;
         this.tileDropper = tileDropper;

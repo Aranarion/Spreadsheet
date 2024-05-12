@@ -9,25 +9,15 @@ import sheep.ui.Prompt;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Rotate implements Perform {
-    private final int direction;
-    private Tetros tetros;
+public class Rotate extends Movement {
     private Render renderer;
 
     public Rotate(int direction, Tetros tetros, Render renderer) {
-        this.direction = direction;
-        this.tetros = tetros;
+        super(tetros, direction);
         this.renderer = renderer;
     }
-
     @Override
-    public void perform(int row, int column, Prompt prompt) {
-        if (!tetros.getStarted()) {
-            return;
-        }
-        apply(direction);
-    }
-    private void apply(int direction) {
+    void apply(int direction) {
         int x = 0;
         int y = 0;
         for (CellLocation cellLocation : tetros.accessContents()) {
