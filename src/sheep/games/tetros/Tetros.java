@@ -105,57 +105,8 @@ public class Tetros implements Tick, Feature {
 
     private void newPiece() {
         int value = randomTile.pick();
-        switch (value) {
-            case 1 -> {
-                contents.add(new CellLocation(0, 0));
-                contents.add(new CellLocation(1, 0));
-                contents.add(new CellLocation(2, 0));
-                contents.add(new CellLocation(2, 1));
-                fallingType = 7;
-            }
-            case 2 -> {
-                contents.add(new CellLocation(0, 1));
-                contents.add(new CellLocation(1, 1));
-                contents.add(new CellLocation(2, 1));
-                contents.add(new CellLocation(2, 0));
-                fallingType = 5;
-            }
-            case 3 -> {
-                contents.add(new CellLocation(0, 0));
-                contents.add(new CellLocation(0, 1));
-                contents.add(new CellLocation(0, 2));
-                contents.add(new CellLocation(1, 1));
-                fallingType = 8;
-            }
-            case 4 -> {
-                contents.add(new CellLocation(0, 0));
-                contents.add(new CellLocation(0, 1));
-                contents.add(new CellLocation(1, 0));
-                contents.add(new CellLocation(1, 1));
-                fallingType = 3;
-            }
-            case 5 -> {
-                contents.add(new CellLocation(0, 0));
-                contents.add(new CellLocation(1, 0));
-                contents.add(new CellLocation(2, 0));
-                contents.add(new CellLocation(3, 0));
-                fallingType = 6;
-            }
-            case 6 -> {
-                contents.add(new CellLocation(0, 1));
-                contents.add(new CellLocation(0, 2));
-                contents.add(new CellLocation(1, 1));
-                contents.add(new CellLocation(0, 1));
-                fallingType = 2;
-            }
-            case 0 -> {
-                contents.add(new CellLocation(0, 0));
-                contents.add(new CellLocation(0, 1));
-                contents.add(new CellLocation(1, 1));
-                contents.add(new CellLocation(1, 2));
-                fallingType = 4;
-            }
-        }
+        pieceGenerators[value].generatePiece(contents);
+        fallingType = pieceGenerators[value].generateFallingType();
     }
     @Override
     public boolean onTick(Prompt prompt) {
