@@ -39,7 +39,6 @@ public class Tetros implements Tick, Feature {
         return !sheet.valueAt(location.getRow(), location.getColumn()).getContent().equals("");
     }
     public boolean inBounds(List<CellLocation> locations) {
-        //for (CellLocation location : locations.subList(3, locations.size())) {
         for (CellLocation location : locations) {
             if (!sheet.contains(location)) {
                 return false;
@@ -63,28 +62,6 @@ public class Tetros implements Tick, Feature {
         this.contents = newContents;
         return false;
     }
-
-    public void fullDrop() {
-        while (!dropTile()) {
-        }
-    }
-
-  //  private void shift(int x) {
-   //     if (x == 0) {
-   //         fullDrop();
-   //         return;
-    //    }
-    //    List<CellLocation> newContents = new ArrayList<>();
-    //        for (CellLocation tile : accessContents()) {
-    //            newContents.add(new CellLocation(tile.getRow(), tile.getColumn() + x));
-   //         }
-   //     if (!inBounds(newContents)) {
-   //         return;
-  //      }
-   //     unrender();
-  //      ununrender(newContents);
-  //      newContents(newContents);
-    //}
 
     public void unrender() {
         for (CellLocation cell : contents) {
@@ -121,7 +98,7 @@ public class Tetros implements Tick, Feature {
         this.randomTile = randomTile;
     }
 
-    private boolean drop() {
+    public boolean drop() {
         contents = new ArrayList<>();
         newPiece();
         for (CellLocation location : contents) {
@@ -231,10 +208,13 @@ public class Tetros implements Tick, Feature {
     }
 
     public Perform getStart() {
-        return new GameStart();
+        return new GameStart(this);
     }
     public boolean hasStarted() {
         return started;
+    }
+    public void Start() {
+        started = true;
     }
 
     public Perform getMove(int direction) {
@@ -242,12 +222,5 @@ public class Tetros implements Tick, Feature {
     }
     public Perform getRotate(int direction) {
         return new Rotate(direction, this);
-    }
-    public class GameStart implements Perform {
-        @Override
-       public void perform(int row, int column, Prompt prompt) {
-            started = true;
-            drop();
-        }
     }
 }

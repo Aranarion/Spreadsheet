@@ -26,7 +26,7 @@ public class Move implements Perform {
     }
     private void shift(int x) {
         if (x == 0) {
-            tetros.fullDrop();
+            fullDrop();
             return;
         }
         List<CellLocation> newContents = new ArrayList<>();
@@ -39,5 +39,9 @@ public class Move implements Perform {
         tetros.unrender();
         tetros.ununrender(newContents);
         tetros.newContents(newContents);
+    }
+    private void fullDrop() {
+        while (!tetros.dropTile()) {
+        }
     }
 }
