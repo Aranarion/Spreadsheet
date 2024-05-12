@@ -188,30 +188,6 @@ public class Tetros implements Tick, Feature {
             }
         }
     }
-
-    private void flip(int direction) {
-        int x = 0;
-        int y = 0;
-        for (CellLocation cellLocation : accessContents()) {
-            x += cellLocation.getColumn();
-            y += cellLocation.getRow();
-        }
-        x /= accessContents().size(); y /= accessContents().size();
-        List<CellLocation> newCells = new ArrayList<>();
-        for (CellLocation location : accessContents()) {
-            int lx = x + ((y -location.getRow())*direction);
-            int ly = y + ((x -location.getColumn())*direction);
-            CellLocation replacement = new CellLocation(ly, lx);
-            newCells.add(replacement);
-        }
-        if (!inBounds(newCells)) {
-            return;
-        }
-        unrender();
-        newContents(newCells);
-        ununrender(newCells);
-    }
-
     @Override
     public boolean onTick(Prompt prompt) {
         if (!started) {
@@ -265,29 +241,13 @@ public class Tetros implements Tick, Feature {
         return new Move(direction, this);
     }
     public Perform getRotate(int direction) {
-        return new Rotate(direction);
+        return new Rotate(direction, this);
     }
     public class GameStart implements Perform {
         @Override
        public void perform(int row, int column, Prompt prompt) {
             started = true;
             drop();
-        }
-    }
-
-    public class Rotate implements Perform {
-        private final int direction;
-
-        public Rotate(int direction) {
-            this.direction = direction;
-        }
-
-        @Override
-        public void perform(int row, int column, Prompt prompt) {
-            if (!hasStarted()) {
-                return;
-            }
-            flip(direction);
         }
     }
 }
