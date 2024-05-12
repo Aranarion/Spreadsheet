@@ -2,7 +2,6 @@ package sheep.games.life;
 
 import sheep.features.Feature;
 import sheep.sheets.Sheet;
-import sheep.ui.Perform;
 import sheep.ui.Prompt;
 import sheep.ui.Tick;
 import sheep.ui.UI;
@@ -20,7 +19,7 @@ public class Life implements Feature, Tick {
     public void register(UI ui) {
         ui.onTick(this);
         ui.addFeature("gol-start", "GOL Start", new GOLStart(sheet, this));
-        ui.addFeature("gol-end", "GOL End", new GOLEnd());
+        ui.addFeature("gol-end", "GOL End", new GOLEnd(this));
     }
     public int numberNeighbour(int row, int column, Sheet previousSheet) {
         int count = 0;
@@ -62,12 +61,6 @@ public class Life implements Feature, Tick {
             for (int j = 0; j < sheet.getColumns(); j++) {
                 sheet.update(i, j, newSheet[i][j]);
             }
-        }
-    }
-    public class GOLEnd implements Perform {
-        @Override
-        public void perform(int row, int column, Prompt prompt) {
-            started = false;
         }
     }
 
