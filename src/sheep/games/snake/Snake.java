@@ -25,10 +25,10 @@ public class Snake implements Feature, Tick, OnChange {
     public void register(UI ui) {
         ui.onTick(this);
         ui.addFeature("snake", "Start Snake", new SnakeStart());
-        ui.onKey("w", "Up", new Up());
-        ui.onKey("s", "Down", new Down());
-        ui.onKey("a", "Left", new Left());
-        ui.onKey("d", "Right", new Right());
+        ui.onKey("w", "Up", new Up(this));
+        ui.onKey("s", "Down", new Down(this));
+        ui.onKey("a", "Left", new Left(this));
+        ui.onKey("d", "Right", new Right(this));
         ui.onChange(this);
     }
 
@@ -129,6 +129,9 @@ public class Snake implements Feature, Tick, OnChange {
             ended = false;
         }
     }
+    public void updateDirection(String newDirection) {
+        direction = newDirection;
+    }
 
     public class SnakeStart implements Perform {
 
@@ -141,32 +144,6 @@ public class Snake implements Feature, Tick, OnChange {
             snakeCoordinates.add(row + "," + column);
             setUp();
             started = true;
-        }
-    }
-
-    public class Up implements Perform {
-
-        @Override
-        public void perform(int row, int column, Prompt prompt) {
-            direction = "up";
-        }
-    }
-    public class Down implements Perform {
-        @Override
-        public void perform(int row, int column, Prompt prompt) {
-            direction = "down";
-        }
-    }
-    public class Left implements Perform {
-        @Override
-        public void perform(int row, int column, Prompt prompt) {
-            direction = "left";
-        }
-    }
-    public class Right implements Perform {
-        @Override
-        public void perform(int row, int column, Prompt prompt) {
-            direction = "right";
         }
     }
 }
