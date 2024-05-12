@@ -6,11 +6,14 @@ import java.util.List;
 
 public class PieceFour implements PieceGenerator {
     @Override
-    public void generatePiece(List<CellLocation> contents, int fallingType) {
+    public void generatePiece(List<CellLocation> contents) {
         contents.add(new CellLocation(0, 0));
         contents.add(new CellLocation(0, 1));
         contents.add(new CellLocation(1, 0));
         contents.add(new CellLocation(1, 1));
-        fallingType = 3;
+    }
+    @Override
+    public int generateFallingType() {
+        return 3;
     }
 }
