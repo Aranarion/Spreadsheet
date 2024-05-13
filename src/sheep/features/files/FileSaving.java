@@ -39,6 +39,14 @@ public class FileSaving implements Feature, Tick, Perform {
         return false;
     }
 
+    /**
+     * Saves the current spreadsheet to the specified file path.
+     *
+     * @param filePath the path to save the file
+     * @throws IOException if an I/O error occurs while writing the file
+     * @pre The specified file path must be valid and writable.
+     * @post The current spreadsheet is saved as a file at the specified path. If an error occurs during the saving process, an IOException is thrown.
+     */
     private void saveFile(String filePath) throws IOException {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
             writer.write(sheet.getRows() + "|" + sheet.getColumns() + "\n");

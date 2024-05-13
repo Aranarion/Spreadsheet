@@ -22,8 +22,9 @@ public class Life implements Feature, Tick {
     }
 
     /**
-     * This method is used to update if the game of life simulation is ongoing
-     * @param newStarted whether or not the simulation has started
+     * Updates the status of whether the Game of Life simulation has started.
+     *
+     * @param newStarted true if the simulation has started, false otherwise
      */
     public void updateStarted(boolean newStarted) {
         started = newStarted;
@@ -37,11 +38,12 @@ public class Life implements Feature, Tick {
     }
 
     /**
-     * Calculates the number of on neighbours a cell has
-     * @param row row of the cell
-     * @param column column of the cell
-     * @param previousSheet pre-tick iteration of the spreadsheet
-     * @return number of neighbours that are on
+     * Calculates the number of neighboring cells that are "on".
+     *
+     * @param row           the row index of the cell
+     * @param column        the column index of the cell
+     * @param previousSheet the spreadsheet before the current tick
+     * @return the number of neighboring cells that are "on"
      */
     public int numberNeighbour(int row, int column, Sheet previousSheet) {
         int count = 0;
@@ -60,12 +62,13 @@ public class Life implements Feature, Tick {
     }
 
     /**
-     * Determines whether a cell is switched on, after the next tick
-     * @param row of the cell
-     * @param column of the cell
-     * @param on whether the cell is currently on or not
-     * @param previousSheet state of the spreadsheet before the next tick
-     * @return true if cell will turn on after next tick
+     * Determines whether a cell will be switched on or off in the next tick.
+     *
+     * @param row           the row index of the cell
+     * @param column        the column index of the cell
+     * @param on            true if the cell is currently on, false otherwise
+     * @param previousSheet the state of the spreadsheet before the next tick
+     * @return true if the cell will be switched on in the next tick, false otherwise
      */
     public boolean onNextTurn(int row, int column, boolean on, Sheet previousSheet) {
         int numberNeighbours = numberNeighbour(row, column, previousSheet);
@@ -77,7 +80,7 @@ public class Life implements Feature, Tick {
     }
 
     /**
-     * At each tick determines the next iteration of the spreadsheet
+     * Updates the spreadsheet to the next iteration based on the rules of the Game of Life.
      */
     public void updateSheet() {
         String[][] newSheet = new String[sheet.getRows()][sheet.getColumns()];
@@ -93,6 +96,7 @@ public class Life implements Feature, Tick {
                 }
             }
         }
+
         for (int i = 0; i < sheet.getRows(); i++) {
             for (int j = 0; j < sheet.getColumns(); j++) {
                 sheet.update(i, j, newSheet[i][j]);

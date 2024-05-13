@@ -54,6 +54,7 @@ public class Snake implements Feature, Tick, OnChange {
                 snakeCoordinates = new ArrayList<>();
                 return true;
             }
+
             if (!consumedFood) {
                 sheet.update(tileRow(snakeCoordinates.getFirst()),
                         tileColumn(snakeCoordinates.getFirst()), "");
@@ -61,21 +62,25 @@ public class Snake implements Feature, Tick, OnChange {
             } else {
                 consumedFood = false;
             }
+
             if (foodOnTile(nextTile)) {
                 newFood = true;
                 consumedFood = true;
             }
+
             if (snakeEatsItself(nextTile)) {
                 started = false;
                 prompt.message("Game Over!");
                 snakeCoordinates = new ArrayList<>();
                 return false;
             }
+
             sheet.update(tileRow(nextTile), tileColumn(nextTile), "1");
             snakeCoordinates.add(nextTile);
             if (newFood) {
                 newFood();
             }
+
             return true;
         }
     }
@@ -135,32 +140,36 @@ public class Snake implements Feature, Tick, OnChange {
     }
 
     /**
-     * Updates the direction of the snake
-     * @param newDirection "up", "left", "right", "down"
+     * Updates the direction of the snake.
+     *
+     * @param newDirection the new direction ("up", "down", "left", "right")
      */
     public void updateDirection(String newDirection) {
         direction = newDirection;
     }
 
     /**
-     * Adds a new tile to the snake
-     * @param coordinates of the new tile
+     * Adds a new tile to the snake.
+     *
+     * @param coordinates the coordinates of the new tile
      */
     public void updateSnakeCoordinates(String coordinates) {
         snakeCoordinates.add(coordinates);
     }
 
     /**
-     * Accesses current snake's coordinates
-     * @return returns current snake's coordinates
+     * Retrieves the current coordinates of the snake.
+     *
+     * @return the current coordinates of the snake
      */
     public List<String> getSnakeCoordinates() {
         return snakeCoordinates;
     }
 
     /**
-     * Updates when the snake feature has been initialised
-     * @param nowStarted true when the snake feature is started
+     * Updates the status of the snake feature.
+     *
+     * @param nowStarted true if the snake feature is started, false otherwise
      */
     public void updateStarted(boolean nowStarted) {
         started = nowStarted;

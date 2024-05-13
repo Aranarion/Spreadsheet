@@ -17,6 +17,15 @@ public class Right implements Perform {
         this.snake = snake;
     }
 
+    /**
+     * Changes the direction of the snake to the right.
+     *
+     * @param row     ignored
+     * @param column  ignored
+     * @param prompt  ignored
+     * @pre the {@code snake} must not be null
+     * @post the direction of the snake is set to right
+     */
     @Override
     public void perform(int row, int column, Prompt prompt) {
         snake.updateDirection("right");

@@ -33,6 +33,14 @@ public class FileLoading implements Feature, Perform, OnChange {
     public void change(Prompt prompt) {
     }
 
+    /**
+     * Loads data from the specified file onto the spreadsheet.
+     *
+     * @param filePath the path to the file to be loaded
+     * @throws IOException if an error occurs while reading the file
+     * @pre The specified file path must point to a valid file.
+     * @post The contents of the file are loaded onto the spreadsheet. If the file format is incorrect or the file is not found, an IOException is thrown.
+     */
     private void loadFile(String filePath) throws IOException {
         sheet.clear();
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {

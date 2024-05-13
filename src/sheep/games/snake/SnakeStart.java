@@ -27,11 +27,16 @@ public class SnakeStart implements Perform {
             row = 0;
             column = 0;
         }
+
         snake.updateSnakeCoordinates(row + "," + column);
         setUp();
         snake.updateStarted(true);
     }
 
+    /**
+     * Sets up the initial state of the spreadsheet for the snake game.
+     * Initializes the snake's starting position and places food on the sheet.
+     */
     private void setUp() {
         for (int i = 0; i < sheet.getRows(); i++) {
             for (int j = 0; j < sheet.getColumns(); j++) {
@@ -42,6 +47,8 @@ public class SnakeStart implements Perform {
                 }
             }
         }
+
+        // Set the initial position of the snake on the sheet
         String[] initialCoordinates = snake.getSnakeCoordinates().getFirst().split(",");
         sheet.update(Integer.parseInt(initialCoordinates[0]),
                 Integer.parseInt(initialCoordinates[1]), "1");
