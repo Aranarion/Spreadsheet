@@ -79,20 +79,24 @@ public class Snake implements Feature, Tick, OnChange {
             return true;
         }
     }
-    public void newFood() {
+
+    private void newFood() {
         int newFoodRow = randomCell.pick().getRow();
         int newFoodColumn = randomCell.pick().getColumn();
         if (!sheet.valueAt(newFoodRow, newFoodColumn).getContent().equals("1")) {
             sheet.update(newFoodRow, newFoodColumn, "2");
         }
     }
-    public int tileRow(String coordinates) {
+
+    private int tileRow(String coordinates) {
         return Integer.parseInt(coordinates.split(",")[0]);
     }
-    public int tileColumn(String coordinates) {
+
+    private int tileColumn(String coordinates) {
         return Integer.parseInt(coordinates.split(",")[1]);
     }
-    public String nextTile() {
+
+    private String nextTile() {
         int currentRow = Integer.parseInt(snakeCoordinates.getLast().split(",")[0]);
         int currentColumn = Integer.parseInt(snakeCoordinates.getLast().split(",")[1]);
         return switch (direction) {
@@ -102,33 +106,23 @@ public class Snake implements Feature, Tick, OnChange {
             case null, default -> currentRow + "," + (currentColumn - 1);
         };
     }
-    public boolean foodOnTile(String coordinates) {
+
+    private boolean foodOnTile(String coordinates) {
         int row = Integer.parseInt(coordinates.split(",")[0]);
         int column = Integer.parseInt(coordinates.split(",")[1]);
         return sheet.valueAt(row, column).getContent().equals("2");
     }
-    public boolean snakeEatsItself(String coordinates) {
+
+    private boolean snakeEatsItself(String coordinates) {
         int row = Integer.parseInt(coordinates.split(",")[0]);
         int column = Integer.parseInt(coordinates.split(",")[1]);
         return sheet.valueAt(row, column).getContent().equals("1");
     }
-    public boolean outOfBounds(String coordinates) {
+
+    private boolean outOfBounds(String coordinates) {
         int row = Integer.parseInt(coordinates.split(",")[0]);
         int column = Integer.parseInt(coordinates.split(",")[1]);
         return row < 0 || column < 0 || row >= sheet.getRows() || column >= sheet.getColumns();
-    }
-
-    public void setUp() {
-        for (int i = 0; i < sheet.getRows(); i++) {
-            for (int j = 0; j < sheet.getColumns(); j++) {
-                if (sheet.valueAt(i, j).getContent().isEmpty()) {
-                } else {
-                    sheet.update(i, j, "2");
-                }
-            }
-        }
-        String[] initialCoordinates = snakeCoordinates.getFirst().split(",");
-        sheet.update(Integer.parseInt(initialCoordinates[0]), Integer.parseInt(initialCoordinates[1]), "1");
     }
 
     @Override
@@ -139,18 +133,35 @@ public class Snake implements Feature, Tick, OnChange {
             ended = false;
         }
     }
+
+    /**
+     * Updates the direction of the snake
+     * @param newDirection "up", "left", "right", "down"
+     */
     public void updateDirection(String newDirection) {
         direction = newDirection;
     }
 
+    /**
+     * Adds a new tile to the snake
+     * @param coordinates of the new tile
+     */
     public void updateSnakeCoordinates(String coordinates) {
         snakeCoordinates.add(coordinates);
     }
 
+    /**
+     * Accesses current snake's coordinates
+     * @return returns current snake's coordinates
+     */
     public List<String> getSnakeCoordinates() {
         return snakeCoordinates;
     }
 
+    /**
+     * Updates when the snake feature has been initialised
+     * @param nowStarted true when the snake feature is started
+     */
     public void updateStarted(boolean nowStarted) {
         started = nowStarted;
     }

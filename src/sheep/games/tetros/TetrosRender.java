@@ -9,16 +9,20 @@ import sheep.sheets.Sheet;
 import java.util.List;
 
 /**
- * Implementation of rendering class for tetros
+ * Renders tetros pieces on a spreadsheet.
+ * This class is responsible for rendering tetros pieces on a given spreadsheet based on their cell locations.
  */
 public class TetrosRender implements Render {
     private final Sheet sheet;
     private final Tetros tetros;
 
     /**
-     * Constructs the class
-     * @param sheet current iteration of the spreadsheet
-     * @param tetros current iteration of tetros
+     * Constructs the tetros renderer.
+     *
+     * @param sheet  The current iteration of the spreadsheet.
+     * @param tetros The current iteration of tetros.
+     * @pre sheet != null && tetros != null
+     * @post A new tetros renderer instance is created with the provided parameters.
      */
     public TetrosRender(Sheet sheet, Tetros tetros) {
         this.sheet = sheet;
@@ -26,8 +30,11 @@ public class TetrosRender implements Render {
     }
 
     /**
-     * Will remove the tetros pieces from their former position
-     * @param items List of tetros pieces to remove
+     * Removes tetros pieces from their former position on the spreadsheet.
+     *
+     * @param items List of tetros pieces to remove.
+     * @pre items != null
+     * @post tetros pieces specified in the items list are removed from the spreadsheet.
      */
     public void unrender(List<CellLocation> items) {
         for (CellLocation cell : items) {
@@ -39,9 +46,12 @@ public class TetrosRender implements Render {
         }
     }
 
-    /**
-     * Will render the tetros pieces to their new positions
-     * @param items List of tetros pieces to render
+    /**tetros
+     * Renders tetros pieces to their new positions on the spreadsheet.
+     *
+     * @param items List of tetros pieces to render.
+     * @pre items != null
+     * @post tetros pieces specified in the items list are rendered on the spreadsheet.
      */
     public void render(List<CellLocation> items) {
         if (items.isEmpty()) {

@@ -10,7 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Implements a shift of the tetros piece
+ * Implements a shift of the tetros piece.
+ * The shift moves the tetros piece horizontally by a specified direction (1 for right, -1 for left).
  */
 public class Shift extends Movement {
     private Tetros tetros;
@@ -18,12 +19,13 @@ public class Shift extends Movement {
     private final TileDropper tileDropper;
 
     /**
-     * Constructs the shift class
-     * @param direction The direction of the shift, 1 is to the right, -1 is to the left
-     * @param tetros The current iteration of tetros
-     * @param renderer The chosen renderer for tetros
-     * @param tileDropper The chosen tiledropper for tetros
-     * @param sheet the current iteration of the spreadsheet
+     * Constructs the shift class.
+     *
+     * @param direction   The direction of the shift: 1 for right, -1 for left.
+     * @param tetros      The current iteration of tetros.
+     * @param renderer    The chosen renderer for tetros.
+     * @param tileDropper The chosen tile dropper for tetros.
+     * @param sheet       The current iteration of the spreadsheet.
      */
     public Shift(int direction, Tetros tetros, Render renderer,
                  TileDropper tileDropper, Sheet sheet) {
@@ -33,6 +35,15 @@ public class Shift extends Movement {
         this.tetros = tetros;
     }
 
+    /**
+     * Applies the shift movement to the tetros piece.
+     * If direction is 0, performs a full drop of the piece.
+     * Otherwise, shifts the piece horizontally by the specified direction.
+     *
+     * @param direction The direction of the shift: 1 for right, -1 for left.
+     * @pre The direction should be within the range [-1, 1].
+     * @post The tetros piece is shifted horizontally by the specified direction, if possible.
+     */
     @Override
     void apply(int direction) {
         if (direction == 0) {
@@ -51,6 +62,10 @@ public class Shift extends Movement {
         tetros.newContents(newContents);
     }
 
+    /**
+     * Fully drops the tetros piece to the bottom of the sheet.
+     * This method is called when the direction is 0.
+     */
     private void fullDrop() {
         while (!tileDropper.dropTile()) {
         }

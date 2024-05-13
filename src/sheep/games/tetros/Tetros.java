@@ -11,7 +11,8 @@ import sheep.ui.*;
 import java.util.*;
 
 /**
- * Controls the function of the tetros feature
+ * Controls the functionality of the tetros feature.
+ * This class manages the tetros game mechanics such as piece movement, rotation, and game initialization.
  */
 public class Tetros implements Tick, Feature {
     private final Sheet sheet;
@@ -25,9 +26,12 @@ public class Tetros implements Tick, Feature {
     private final RandomTile randomTile;
 
     /**
-     * Constructs the tetros class
-     * @param sheet the current iteration of the spreadsheet
-     * @param randomTile implements randomtile which will be used to pick random tile for food
+     * Constructs the tetros game instance.
+     *
+     * @param sheet      The current iteration of the spreadsheet.
+     * @param randomTile Implements RandomTile, used to pick a random tile for tetros.
+     * @pre sheet != null && randomTile != null
+     * @post A new tetros game instance is created with the provided parameters.
      */
     public Tetros(Sheet sheet, RandomTile randomTile) {
         this.sheet = sheet;
@@ -50,32 +54,40 @@ public class Tetros implements Tick, Feature {
     }
 
     /**
-     * Allows the current list of cell locations of the tetros pieces to be accessed
-     * @return list of cell locations of the tetros pieces
+     * Accesses the current list of cell locations of the tetros pieces.
+     *
+     * @return The list of cell locations of the tetros pieces.
      */
     public List<CellLocation> accessContents() {
         return contents;
     }
 
     /**
-     * Sets the locations of the tetros pieces
-     * @param newContents List of new cell locations of all tetros pieces
+     * Sets the locations of the tetros pieces.
+     *
+     * @param newContents The list of new cell locations of all tetros pieces.
+     * @pre newContents != null
+     * @post The tetros piece locations are updated with the provided list.
      */
     public void newContents(List<CellLocation> newContents) {
         contents = newContents;
     }
 
     /**
-     * Accesses current dropping tetros piece's falling type
-     * @return integer which is formula of tetros piece's on spreadsheet
+     * Accesses the current falling type of the dropping tetros piece.
+     *
+     * @return An integer representing the falling type of the tetros piece.
      */
     public int getFallingType() {
         return fallingType;
     }
 
     /**
-     * Allows falling type to be changed
-     * @param newFallingType new integer which is formula of new tetros piece's on spreadsheet
+     * Updates the falling type of the dropping tetros piece.
+     *
+     * @param newFallingType The new falling type to set.
+     * @pre newFallingType > 0
+     * @post The falling type of the tetros piece is updated.
      */
     public void updateFallingType(int newFallingType) {
         fallingType = newFallingType;
@@ -98,41 +110,52 @@ public class Tetros implements Tick, Feature {
     }
 
     /**
-     * Initialises the start of tetros
-     * @return perform the initialisation of tetros
+     * Initializes the start of tetros.
+     *
+     * @return A Perform object for initializing tetros.
+     * @post tetros game is initialized and started.
      */
     public Perform getStart() {
         return new GameStart(this, tileCreator);
     }
 
     /**
-     * accesses whether tetros has started or not
-     * @return true if tetros has started
+     * Checks if tetros has started.
+     *
+     * @return True if tetros has started, false otherwise.
      */
     public boolean getStarted() {
         return started;
     }
 
     /**
-     * When tetros is initialised, sets boolean of started as true
+     * Sets the started status of tetros to true.
+     *
+     * @post tetros game is set as started.
      */
     public void updateStarted() {
         started = true;
     }
 
     /**
-     * When a keybind indicating a player shift tetros piece will instantiate that shift
-     * @param direction the setting of the move, 1 is right and -1 is left
-     * @return shift class
+     * Instantiates a shift action for tetros piece.
+     *
+     * @param direction The direction of the shift (1 for right, -1 for left).
+     * @return A Perform object for shifting tetros piece.
+     * @pre direction == 1 || direction == -1
+     * @post A shift action is instantiated based on the provided direction.
      */
     public Perform getMove(int direction) {
         return new Shift(direction, this, renderer, tileDropper, sheet);
     }
 
     /**
-     * When a keybind indicating a player rotates tetros piece will instantiate that rotation
-     * @param direction the setting of the move, 1 is right and -1 is left
-     * @return rotate class
+     * Instantiates a rotation action for tetros piece.
+     *
+     * @param direction The direction of the rotation (1 for right, -1 for left).
+     * @return A Perform object for rotating tetros piece.
+     * @pre direction == 1 || direction == -1
+     * @post A rotation action is instantiated based on the provided direction.
      */
     public Perform getRotate(int direction) {
         return new Rotate(direction, this, renderer, sheet);
